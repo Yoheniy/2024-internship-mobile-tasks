@@ -1,7 +1,6 @@
 
 import 'dart:io';
 
-import 'Product.dart';
 import 'ProductManager.dart';
 
 void main(){
@@ -13,13 +12,14 @@ void main(){
   print('                                                                           ');
   print('                                                                           ');
   print('                                                                           ');
-  print('                                                                           ');
   
 
  
 
   int choice=0;
   while (choice!=6){
+  print('                                                                           ');
+  print('                                                                           ');
   print("======================E-CCOMMERCE PROJECT=================================");
   print('                                                                           ');
   print('                                                                           ');

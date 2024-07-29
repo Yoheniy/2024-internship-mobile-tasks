@@ -19,18 +19,23 @@ class ProductManager {
     products.add(prod);
 
     print('Product added successfully.');
+    print('                             ');
+
+
 
   }
 
   void viewAllProducts(){
     if(products.length==0){
       print('There is NO product Available');
+      print('                             ');
     }
     else{
       for (var product in products){
         print(product.name);
         print(product.description);
         print(product.price);
+        print('                             ');
       }
 
     }
@@ -39,6 +44,7 @@ class ProductManager {
     void viewOneProduct(){
       if(products.length==0){
       print('There is NO product Available');
+      print('                             ');
     }
     else{
       print('Enter the number of product you want to view ');
@@ -46,6 +52,7 @@ class ProductManager {
       var number=1;
       for (var product in products){
         print('$number . ${product.name}');
+
         number++;
 
       }
@@ -55,6 +62,7 @@ class ProductManager {
       print(products[indx-1].name);
       print(products[indx-1].description);
       print(products[indx-1].price);
+      print('                             ');
     }
 
     
@@ -88,7 +96,9 @@ class ProductManager {
     print('Please Enter the new price');
     String? new_price = stdin.readLineSync();
     products[indx-1].name=new_price;
-  
+    print('the edit is successfully completed');
+    print('                                   ');
+
       
     }
 
@@ -106,6 +116,9 @@ class ProductManager {
 
       int? indx=int.parse(stdin.readLineSync()??'0');
       products.removeAt(indx-1);
+
+      print('the deletion is completed');
+      print('                         ');
 
 
     }
