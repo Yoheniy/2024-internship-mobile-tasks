@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task6/common/inputfield.dart';
+import 'package:task6/pages/search_page/rangeslider.dart';
 import 'package:task6/pages/search_page/search.dart';
 
 class BottmSheet extends StatefulWidget {
@@ -52,18 +53,28 @@ class _BottmSheetState extends State<BottmSheet> {
               ),
             ],
           ),
-      //  Padding(
-      //           padding: const EdgeInsets.only(top:10.0,bottom: 5,left: 10),
-      //           child: SizedBox(
-      //              child:text2("Catagory", FontWeight.w500, 14),
-      //           ),
-      //         ),
-      const Spacer(flex: 2),
-      ElevatedButton(
-          child: const Text('APPLY'),
-          onPressed: (){
-            Navigator.pop(context);
-   } ,)   
+
+          const rangeslider(),
+
+       const Spacer(flex: 1),
+   ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue, // Set the background color to blue
+    minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 50), // Set the width to 80% of the screen width and a fixed height
+  ),
+  child: const Text(
+    'APPLY',
+    style: TextStyle(color: Color.fromARGB(255, 246, 247, 247)), // Text color
+  ),
+  onPressed: () {
+    Navigator.pop(context);
+  },
+   
+),
+
+    const Spacer(flex: 1)
+
+
         ],
       ),
 
