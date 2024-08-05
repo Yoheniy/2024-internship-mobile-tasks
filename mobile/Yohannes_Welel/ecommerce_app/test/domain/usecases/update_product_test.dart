@@ -18,7 +18,7 @@ void main(){
     updateProductUsecase=UpdateProductUsecase(mockProductRepository);
     });  
 
-  const tProduct = ProductEntity(id:1,name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
+  const tProduct = ProductEntity(id:'1',name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
 
 
 
@@ -33,7 +33,8 @@ void main(){
             //arrange
             when(
               mockProductRepository.updateProduct(tProduct)
-            ).thenAnswer((_) async =>const Right(tProduct) );
+            // ignore: void_checks
+            ).thenAnswer((_) async =>const Right(true) );
 
 
             //act
@@ -41,7 +42,7 @@ void main(){
 
 
             //assert
-          expect(result,const Right(tProduct));
+          expect(result,const Right(true));
 
 
           },

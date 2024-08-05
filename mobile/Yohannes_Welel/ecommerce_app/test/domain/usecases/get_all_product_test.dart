@@ -19,8 +19,9 @@ void main(){
 
 
 
-  const List<ProductEntity>AllProductDetail=[ ProductEntity(id:1,name: 'Shoes',description: 'brand new Shoes',price: 23.0,imageUrl: 'imagepath'),
-     ProductEntity(id:2,name: 'Shoes',description: 'description',price: 23.0,imageUrl: 'imagepath')
+  // ignore: constant_identifier_names
+  const List<ProductEntity>AllProductDetail=[ ProductEntity(id:'1',name: 'Shoes',description: 'brand new Shoes',price: 23.0,imageUrl: 'imagepath'),
+     ProductEntity(id:'2',name: 'Shoes',description: 'description',price: 23.0,imageUrl: 'imagepath')
   ];
 
 

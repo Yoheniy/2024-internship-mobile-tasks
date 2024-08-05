@@ -17,21 +17,22 @@ void main(){
     getProductUsescases=GetProductUsescases(mockProductRepository);
     });  
 
-  const SingleProductDetail = ProductEntity(id:1,name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
+  // ignore: constant_identifier_names
+  const SingleProductDetail = ProductEntity(id:'1',name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
 
 
 
 
 
        //testing Single product by id
-        int id=1;
+        String id='1';
         test(
           'this is single  product detail tested  successfully',
 
           () async {
             //arrange
             when(
-              mockProductRepository.getCurrentProduct(id)
+              mockProductRepository.getProductById(id)
             ).thenAnswer((_) async =>const Right(SingleProductDetail) );
 
 

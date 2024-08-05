@@ -70,11 +70,11 @@ class MockProductRepository extends _i1.Mock implements _i4.ProductRepository {
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, _i7.ProductEntity>> getCurrentProduct(
-          int? id) =>
+  _i5.Future<_i2.Either<_i6.Failure, _i7.ProductEntity>> getProductById(
+          String? id) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getCurrentProduct,
+          #getProductById,
           [id],
         ),
         returnValue:
@@ -82,7 +82,7 @@ class MockProductRepository extends _i1.Mock implements _i4.ProductRepository {
                 _FakeEither_0<_i6.Failure, _i7.ProductEntity>(
           this,
           Invocation.method(
-            #getCurrentProduct,
+            #getProductById,
             [id],
           ),
         )),
@@ -107,57 +107,57 @@ class MockProductRepository extends _i1.Mock implements _i4.ProductRepository {
       ) as _i5.Future<_i2.Either<_i6.Failure, List<_i7.ProductEntity>>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, void>> insertProduct(
+  _i5.Future<_i2.Either<_i6.Failure, bool>> insertProduct(
           _i7.ProductEntity? product) =>
       (super.noSuchMethod(
         Invocation.method(
           #insertProduct,
           [product],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
-            _FakeEither_0<_i6.Failure, void>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, bool>>.value(
+            _FakeEither_0<_i6.Failure, bool>(
           this,
           Invocation.method(
             #insertProduct,
             [product],
           ),
         )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, void>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, bool>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, void>> deleteProduct(int? id) =>
+  _i5.Future<_i2.Either<_i6.Failure, bool>> deleteProduct(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteProduct,
           [id],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
-            _FakeEither_0<_i6.Failure, void>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, bool>>.value(
+            _FakeEither_0<_i6.Failure, bool>(
           this,
           Invocation.method(
             #deleteProduct,
             [id],
           ),
         )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, void>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, bool>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, void>> updateProduct(
+  _i5.Future<_i2.Either<_i6.Failure, bool>> updateProduct(
           _i7.ProductEntity? product) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateProduct,
           [product],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
-            _FakeEither_0<_i6.Failure, void>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, bool>>.value(
+            _FakeEither_0<_i6.Failure, bool>(
           this,
           Invocation.method(
             #updateProduct,
             [product],
           ),
         )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, void>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, bool>>);
 }
 
 /// A class which mocks [Client].

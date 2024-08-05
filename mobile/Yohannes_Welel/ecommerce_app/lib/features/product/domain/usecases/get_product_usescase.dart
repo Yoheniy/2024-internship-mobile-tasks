@@ -9,8 +9,8 @@ class GetProductUsescases{
   GetProductUsescases(this.productRepository);
 
 
-  Future<Either<Failure, ProductEntity>> execute(int id) async {
-    return await productRepository.getCurrentProduct(id);
+  Future<Either<Failure, ProductEntity>> execute(String id) async {
+    return await productRepository.getProductById(id);
   }
 
 }

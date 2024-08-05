@@ -18,7 +18,8 @@ void main(){
     createProductUsecase=CreateProductUsecase(mockProductRepository);
     });  
 
-  const SingleProductDetail = ProductEntity(id:1,name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
+  // ignore: constant_identifier_names
+  const product = ProductEntity(id:'1',name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
 
 
 
@@ -32,16 +33,17 @@ void main(){
           () async {
             //arrange
             when(
-              mockProductRepository.insertProduct(SingleProductDetail)
-            ).thenAnswer((_) async =>const Right(SingleProductDetail) );
+              mockProductRepository.insertProduct(product)
+            // ignore: void_checks
+            ).thenAnswer((_) async =>const Right(true) );
 
 
             //act
-            final result = await createProductUsecase.execute(SingleProductDetail);
+            final result = await createProductUsecase.execute(product);
 
 
             //assert
-          expect(result,const Right(SingleProductDetail));
+          expect(result,const Right(true));
 
 
           },

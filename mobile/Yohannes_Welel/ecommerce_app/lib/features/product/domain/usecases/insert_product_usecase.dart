@@ -7,7 +7,7 @@ import '../repositories/product_repository.dart';
 class CreateProductUsecase{
   final ProductRepository productRepository;
   CreateProductUsecase(this.productRepository);
-  Future<Either<Failure, void>> execute(ProductEntity product) async{
+  Future<Either<Failure, bool>> execute(ProductEntity product) async{
     return await productRepository.insertProduct(product);
 
 

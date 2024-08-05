@@ -1,20 +1,22 @@
+// ignore: file_names
 
-import 'package:equatable/equatable.dart';
 
-abstract class Failure extends Equatable {
-  final String message;
-  const Failure(this.message);
 
-  @override
-  List<Object?> get props => [message];
+abstract class Failure {
+   final String message;
+
+  Failure({required this.message});
 }
 
-// class ServerFailure extends Failure{
-//   const ServerFailure(String message):super(message); 
-// }
-
-// class ConnectionFailure extends Failure{
-//   const ConnectionFailure(String message):super(message); 
-// }
-
- 
+class ServerFailure extends Failure{
+  ServerFailure(String s, {required super.message});
+  
+}
+class ConnectionFailure extends Failure{
+  ConnectionFailure({required super.message});
+  
+}
+class DatabaseFailure extends Failure{
+  DatabaseFailure({required super.message});
+  
+}

@@ -1,6 +1,5 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:ecommerce_app/features/product/domain/entities/product_entity.dart';
 import 'package:ecommerce_app/features/product/domain/usecases/delete_product_usescase.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -18,22 +17,22 @@ void main(){
     deleteProductUsescase=DeleteProductUsescase(mockProductRepository);
     });  
 
-  const SingleProductDetail = ProductEntity(id:1,name: 'name',description: 'description',price: 23.0,imageUrl: 'imagepath');
 
 
 
 
 
        //testing Single product by id
-        int id=1;
+        String id='1';
         test(
           'Deleting single  product detail tested  successfully',
 
           () async {
             //arrange
             when(
-              mockProductRepository.deleteProduct(id)
-            ).thenAnswer((_) async =>const Right(SingleProductDetail) );
+              mockProductRepository.deleteProduct(id )
+            // ignore: void_checks
+            ).thenAnswer((_) async =>const Right(true) );
 
 
             //act
@@ -41,7 +40,7 @@ void main(){
 
 
             //assert
-          expect(result,const Right(SingleProductDetail));
+          expect(result,const Right(true));
 
 
           },
