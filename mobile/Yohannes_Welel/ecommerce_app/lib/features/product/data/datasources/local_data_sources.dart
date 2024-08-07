@@ -1,26 +1,27 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../core/constants/constants.dart';
 import '../../../../core/errormessage/exceptions.dart';
 import '../models/product_model.dart';
 
 abstract class ProductLocalDataSource{
+  Future<void> cacheProduct({required ProductModel? productToCache});
   Future<ProductModel?> getProductById(String id);
   Future<List<ProductModel>> getAll();
   Future<bool>insertProduct(ProductModel product);
   Future<bool>deleteProduct(String id);
   Future<bool>updateProduct(ProductModel product);
 
+
    
 }
-
+const cachedProduct = 'CACHED_PRODUCT';
 
 class ProductLocalDataSourceImpl extends ProductLocalDataSource {
-  late final http.Client client;
 
-  ProductLocalDataSourceImpl({required this.client});
+  final SharedPreferences sharedPreferences;
+  ProductLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
   Future<List<ProductModel>> getAll() {
@@ -28,19 +29,13 @@ class ProductLocalDataSourceImpl extends ProductLocalDataSource {
   }
 
   @override
-  Future<ProductModel> getProductById(String id) async {
-    final response = await client.get(
-      Uri.parse(
-        Urls.getProdcutById(id.toString()),
-      ),
-    );
+  Future<ProductModel> getProductById(String id){
+   final jsonString = sharedPreferences.getString(cachedProduct);
 
-    if (response.statusCode == 200) {
-      return ProductModel.fromJson(
-        json.decode(response.body),
-      );
+    if (jsonString != null) {
+      return Future.value(ProductModel.fromJson(json.decode(jsonString)));
     } else {
-      throw ServerException();
+      throw CacheException();
     }
   }
 
@@ -61,4 +56,20 @@ class ProductLocalDataSourceImpl extends ProductLocalDataSource {
     // TODO: implement updateProduct
     throw UnimplementedError();
   }
+  
+  @override
+  Future<void> cacheProduct({required ProductModel? productToCache}) async{
+    if (productToCache != null) {
+      sharedPreferences.setString(
+        cachedProduct,
+        json.encode(
+          productToCache.toJson(),
+        ),
+      );
+    } else {
+      throw CacheException();
+    }
+  }
 }
+
+

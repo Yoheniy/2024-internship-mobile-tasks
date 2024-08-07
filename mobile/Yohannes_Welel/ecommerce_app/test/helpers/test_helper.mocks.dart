@@ -276,6 +276,18 @@ class MockProductLocalDataSource extends _i1.Mock
   }
 
   @override
+  _i7.Future<void> cacheProduct({required _i3.ProductModel? productToCache}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cacheProduct,
+          [],
+          {#productToCache: productToCache},
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
+
+  @override
   _i7.Future<_i3.ProductModel?> getProductById(String? id) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -294,6 +306,35 @@ class MockProductLocalDataSource extends _i1.Mock
         returnValue:
             _i7.Future<List<_i3.ProductModel>>.value(<_i3.ProductModel>[]),
       ) as _i7.Future<List<_i3.ProductModel>>);
+
+  @override
+  _i7.Future<bool> insertProduct(_i3.ProductModel? product) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #insertProduct,
+          [product],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> deleteProduct(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteProduct,
+          [id],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> updateProduct(_i3.ProductModel? product) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateProduct,
+          [product],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
 }
 
 /// A class which mocks [InternetConnectionChecker].
