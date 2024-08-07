@@ -1,50 +1,141 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:ecommerce_app/core/errormessage/exceptions.dart';
-// import 'package:ecommerce_app/core/errormessage/failure.dart';
-// import 'package:ecommerce_app/features/product/data/datasources/remote_data_sources.dart';
-// import 'package:ecommerce_app/features/product/data/models/product_model.dart';
-// import 'package:ecommerce_app/features/product/data/repositories/product_repository_impl.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/mockito.dart';
+import 'dart:io';
 
-// class MockRemoteDataSource extends Mock implements ProductRemoteDataSource {}
+import 'package:dartz/dartz.dart';
+import 'package:ecommerce_app/core/errormessage/exceptions.dart';
+import 'package:ecommerce_app/core/errormessage/failure.dart';
+import 'package:ecommerce_app/features/product/data/models/product_model.dart';
+import 'package:ecommerce_app/features/product/data/repositories/product_repository_impl.dart';
+import 'package:ecommerce_app/features/product/domain/entities/product_entity.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import '../../helpers/test_helper.mocks.dart';
 
-// void main() {
-//   late MockRemoteDataSource mockRemoteDataSource;
-//   late ProductRepositoryImpl repository;
 
-//   setUp(() {
-//     mockRemoteDataSource = MockRemoteDataSource();
-//     repository = ProductRepositoryImpl(remoteDataSource: mockRemoteDataSource);
-//   });
 
-//   group('getAll', () {
-//     final productModel = ProductModel(
-//       id: 1,
-//       name: 'Nike',
-//       description: 'new brand shoes',
-//       imageUrl: 'imagepath',
-//       price: 300.0,
-//     );
+void main() {
+  late MockProductRemoteDataSource mockRemoteDataSource;
+  late MockProductLocalDataSource mockLocalDataSource;
+  late MockNetworkInfo mockNetworkInfo;
+  late ProductRepositoryImpl repository;
+  
+setUp(() { 
+    mockRemoteDataSource = MockProductRemoteDataSource();
+    mockLocalDataSource = MockProductLocalDataSource();
+    mockNetworkInfo = MockNetworkInfo();
+    repository = ProductRepositoryImpl(
+      remoteDataSource: mockRemoteDataSource,
+      localDataSource: mockLocalDataSource,
+      networkInfo: mockNetworkInfo,
+    );
+  });
 
-//     test('should return List<ProductEntity> when the call is successful', () async {
-//       when(mockRemoteDataSource.getAll()).thenAnswer(
-//         (_) async => [productModel],
-//       );
+  const testProductModel = ProductModel(
+    id: '1',
+    name: 'shoe',
+    description: 'Nike shoes brand',
+    price: 332.0,
+    imageUrl: 'imagepath',
+  );
+   const testProductEntity = ProductEntity(
+    id: '1',
+    name: 'shoe',
+    description: 'Nike shoes brand',
+    price: 332.0,
+    imageUrl: 'imagepath',
+  );
+  
+  const testId = '1';
+  group('get product by id', () {
+    test('should return product when a call to data source is successful',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getProductById(testId))
+          .thenAnswer((_) async => testProductModel);
+      // act
+      final result = await repository.getProductById(testId);
 
-//       final result = await repository.getAll();
 
-//       expect(result, Right([productModel.toEntity()]));
-//     });
+      // assert
+       verify(mockRemoteDataSource.getProductById(testId));
+        expect(result, equals(const Right(testProductEntity)));
+    });
 
-//     test('should return Failure when the call is unsuccessful', () async {
-//       when(mockRemoteDataSource.getAll()).thenThrow(ServerException('server is not found'));
+    test(
+        'should return server failure when a call to data source is unsuccessful',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getProductById(testId))
+          .thenThrow(ServerException());
+      // act
+      final result = await repository.getProductById(testId);
 
-//       final result = await repository.getAll();
+      // assert
+      expect(
+        result,
+        equals(
+          const Left(
+            ServerFailure('An error has occurred'),
+          ),
+        ),
+      );
+    });
 
-//       expect(result, Left(ServerFailure('Server failure', message: 'server is not found')));
-//     });
-//   });
+    test('should return connection failure when the device has no internet',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getProductById(testId))
+          .thenThrow(const SocketException('Failed to connect to the network'));
+      // act
+      final result = await repository.getProductById(testId);
 
-//   // Similarly, add tests for other methods like getProductById, insertProduct, etc.
-// }
+      // assert
+      expect(
+        result,
+        equals(
+          const Left(
+            ConnectionFailure('Failed to connect to the network'),
+          ),
+        ),
+      );
+    });
+  });
+
+    test('should return server failure when a call to data source is unsuccessful', () async {
+      // arrange
+      when(mockRemoteDataSource.getAll()).thenThrow(ServerException());
+      // act
+      final result = await repository.getAll();
+      // assert
+      expect(result, equals(const Left(ServerFailure('An error has occurred'))));
+    });
+
+    test('should return connection failure when the device has no internet', () async {
+      // arrange
+      when(mockRemoteDataSource.getAll()).thenThrow(const SocketException('Failed to connect to the network'));
+      // act
+      final result = await repository.getAll();
+      // assert
+      expect(result, equals(const Left(ConnectionFailure('Failed to connect to the network'))));
+    });
+
+    test('should return connection failure when the device has no internet',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getAll())
+          .thenThrow(const SocketException('Failed to connect to the network'));
+      // act
+      final result = await repository.getAll();
+
+      // assert
+      expect(
+        result,
+        equals(
+          const Left(
+            ConnectionFailure('Failed to connect to the network'),
+          ),
+        ),
+      );
+    });
+
+
+}

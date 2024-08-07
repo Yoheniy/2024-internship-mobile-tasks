@@ -30,18 +30,12 @@ class ProductRemoteDataSourceImpl extends ProductRemoteDataSource {
 
   @override
   Future<ProductModel> getProductById(String id) async {
-    final response = await client.get(
-      Uri.parse(
-        Urls.getProdcutById(id.toString()),
-      ),
-    );
+    final response = await client.get(Uri.parse(Urls.getProdcutById(id.toString())));
 
     if (response.statusCode == 200) {
-      return ProductModel.fromJson(
-        json.decode(response.body),
-      );
+      return ProductModel.fromJson(json.decode(response.body));
     } else {
-      throw ServerException('server not found');
+      throw ServerException();
     }
   }
 
@@ -62,6 +56,4 @@ class ProductRemoteDataSourceImpl extends ProductRemoteDataSource {
     // TODO: implement updateProduct
     throw UnimplementedError();
   }
-  
-
 }

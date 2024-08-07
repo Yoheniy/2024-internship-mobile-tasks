@@ -53,13 +53,8 @@ void main() {
         () async {
       // arrange
       when(
-        mockHttpClient.get(
-          Uri.parse(
-            Urls.getProdcutById(Id),
-          ),
-        ),
-      ).thenAnswer(
-        (_) async => http.Response(
+        mockHttpClient.get(Uri.parse(Urls.getProdcutById(Id)))
+        ).thenAnswer((_) async => http.Response(
           'Not found',
           404,
         ),

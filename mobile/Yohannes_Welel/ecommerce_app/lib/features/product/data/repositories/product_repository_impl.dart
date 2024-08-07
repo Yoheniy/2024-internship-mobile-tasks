@@ -1,87 +1,87 @@
 
 
+import 'dart:io';
+
+import '../../../../core/errormessage/exceptions.dart';
+import '../../../../core/errormessage/failure.dart';
+import '../../../../core/network/network_info.dart';
+import '../../domain/entities/product_entity.dart';
+import 'package:dartz/dartz.dart';
+
+import '../../domain/repositories/product_repository.dart';
+import '../datasources/local_data_sources.dart';
+import '../datasources/remote_data_sources.dart';
+
+class ProductRepositoryImpl extends ProductRepository {
+  final ProductRemoteDataSource remoteDataSource;
+  final ProductLocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
+
+  ProductRepositoryImpl(
+      {required this.remoteDataSource,
+      required this.localDataSource,
+      required this.networkInfo});
+
+  @override
+  Future<Either<Failure, bool>> deleteProduct(String id) {
+    // TODO: implement deleteProduct
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getAll() async {
+    try {
+     final remoteProducts = await remoteDataSource.getAll();
+        // Convert List<ProductModel> to List<ProductEntity>
+        final productEntities = remoteProducts.map((product) {
+          return ProductEntity(
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            imageUrl: product.imageUrl,
+          );
+        }).toList();
+        return Right(productEntities);
+    } on ServerException {
+      return const Left(ServerFailure('An error has occurred'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductEntity>> getProductById(String id) async {
+    try {
+      // final product = await remoteDataSource.getProductById(id);
+      // return Right(product.toEntity());
+       final remoteProduct = await remoteDataSource.getProductById(id);
+        // Convert ProductModel to ProductEntity
+        final productEntity = ProductEntity(
+          id: remoteProduct.id,
+          name: remoteProduct.name,
+          description: remoteProduct.description,
+          price: remoteProduct.price,
+          imageUrl: remoteProduct.imageUrl,
+        );
+        return Right(productEntity);
+    } on ServerException {
+      return const Left(ServerFailure('An error has occurred'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
 
 
-//   // lib/features/product/data/repositories/product_repository_impl.dart
-// // lib/features/product/data/repositories/product_repository_impl.dart
+  @override
+  Future<Either<Failure, bool>> insertProduct(ProductEntity product) {
+    // TODO: implement insertProduct
+    throw UnimplementedError();
+  }
 
-
-// import 'package:dartz/dartz.dart';
-
-// import '../../../../core/errormessage/failure.dart';
-// import '../../domain/entities/product_entity.dart';
-// import '../../domain/repositories/product_repository.dart';
-// import '../datasources/remote_data_sources.dart';
-// import '../models/product_model.dart';
-
-// class ProductRepositoryImpl implements ProductRepository {
-//   final ProductRemoteDataSource remoteDataSource;
-
-//   ProductRepositoryImpl({required this.remoteDataSource});
-
-//   @override
-// Future<Either<Failure, List<ProductEntity>>> getAll() async {
-//   try {
-//     final productModels = await remoteDataSource.getAll();
-//     final products = productModels.map((model) => model.toEntity()).toList();
-//     return Right(products);
-//   } catch (e) {
-//     return Left(ServerFailure('Server failure', message: e.toString()));
-//   }
-// }
-
-
-//   @override
-//   Future<Either<Failure, ProductEntity>> getProductById(String id) async {
-//     try {
-//       final productModel = await remoteDataSource.getProductById(id);
-//       return Right(productModel.toEntity());
-//     } catch (e) {
-//      return Left(ServerFailure('Server failure', message: e.toString()));
-//     }
-//   }
-
-//   @override
-//   Future<Either<Failure, bool>> insertProduct(ProductEntity product) async {
-//     try {
-//       final productModel = ProductModel(
-//         id: product.id,
-//         name: product.name,
-//         description: product.description,
-//         imageUrl: product.imageUrl,
-//         price: product.price,
-//       );
-//       await remoteDataSource.insertProduct(productModel);
-//       return 
-//     } catch (e) {
-//    return Left(ServerFailure('Server failure', message: e.toString()));
-//     }
-//   }
-
-//   @override
-//   Future<Either<Failure, bool>> updateProduct(ProductEntity product) async {
-//     try {
-//       final productModel = ProductModel(
-//         id: product.id,
-//         name: product.name,
-//         description: product.description,
-//         imageUrl: product.imageUrl,
-//         price: product.price,
-//       );
-//       await remoteDataSource.updateProduct(productModel);
-//       return const Right(null);
-//     } catch (e) {
-//    return Left(ServerFailure('Server failure', message: e.toString()));
-//     }
-//   }
-
-//   @override
-//   Future<Either<Failure, void>> deleteProduct(int id) async {
-//     try {
-//       await remoteDataSource.deleteProduct(id);
-//       return const Right(null);
-//     } catch (e) {
-//    return Left(ServerFailure('Server failure', message: e.toString()));
-//     }
-//   }
-// }
+  @override
+  Future<Either<Failure, bool>> updateProduct(ProductEntity product) {
+    // TODO: implement updateProduct
+    throw UnimplementedError();
+  }
+}
