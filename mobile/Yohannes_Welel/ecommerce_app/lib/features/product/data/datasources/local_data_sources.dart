@@ -1,75 +1,85 @@
+
+
+
+
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../../../core/constants/constants.dart';
 import '../../../../core/errormessage/exceptions.dart';
+import '../../../../core/errormessage/failure.dart';
+import '../../domain/entities/product_entity.dart';
 import '../models/product_model.dart';
 
-abstract class ProductLocalDataSource{
-  Future<void> cacheProduct({required ProductModel? productToCache});
-  Future<ProductModel?> getProductById(String id);
-  Future<List<ProductModel>> getAll();
-  Future<bool>insertProduct(ProductModel product);
-  Future<bool>deleteProduct(String id);
-  Future<bool>updateProduct(ProductModel product);
 
-
-   
+abstract class ProductLocalDataSource {
+  Future<List<ProductModel>> getAllProducts();
+  Future<ProductModel> getProductById(String id);
+  Future<void> cacheProducts(List<ProductModel> products);
+  Future<void> cacheProduct(ProductModel product);
+  Future<void> deleteProduct(String id);
 }
-const cachedProduct = 'CACHED_PRODUCT';
 
-class ProductLocalDataSourceImpl extends ProductLocalDataSource {
-
+class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   final SharedPreferences sharedPreferences;
+
   ProductLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<List<ProductModel>> getAll() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ProductModel> getProductById(String id){
-   final jsonString = sharedPreferences.getString(cachedProduct);
-
-    if (jsonString != null) {
-      return Future.value(ProductModel.fromJson(json.decode(jsonString)));
-    } else {
+  Future<List<ProductModel>> getAllProducts() async {
+    try {
+      final jsonString = sharedPreferences.getString(Urls.CACHED_PRODUCTS);
+      if (jsonString != null) {
+        final List<dynamic> jsonList = json.decode(jsonString);
+        return jsonList.map((jsonItem) => ProductModel.fromJson(jsonItem)).toList();
+      } else {
+        throw CacheException();
+      }
+    } catch (e) {
       throw CacheException();
     }
   }
 
   @override
-  Future<bool> deleteProduct(String id) {
-    // TODO: implement deleteProduct
-    throw UnimplementedError();
+  Future<ProductModel> getProductById(String id) async {
+    try {
+      final products = await getAllProducts();
+      return products.firstWhere((product) => product.id == id, orElse: () => throw CacheException());
+    } catch (e) {
+      throw CacheException();
+    }
   }
 
   @override
-  Future<bool> insertProduct(ProductModel product) {
-    // TODO: implement insertProduct
-    throw UnimplementedError();
+  Future<void> cacheProducts(List<ProductModel> products) async {
+    try {
+      final jsonList = products.map((product) => product.toJson()).toList();
+      await sharedPreferences.setString(Urls.CACHED_PRODUCTS, json.encode(jsonList));
+    } catch (e) {
+      throw CacheException();
+    }
   }
 
   @override
-  Future<bool> updateProduct(ProductModel product) {
-    // TODO: implement updateProduct
-    throw UnimplementedError();
+  Future<void> cacheProduct(ProductModel product) async {
+    try {
+      final currentProducts = await getAllProducts();
+      final updatedProducts = [...currentProducts, product];
+      await cacheProducts(updatedProducts);
+    } catch (e) {
+      throw CacheException();
+    }
   }
-  
+
   @override
-  Future<void> cacheProduct({required ProductModel? productToCache}) async{
-    if (productToCache != null) {
-      sharedPreferences.setString(
-        cachedProduct,
-        json.encode(
-          productToCache.toJson(),
-        ),
-      );
-    } else {
+  Future<void> deleteProduct(String id) async {
+    try {
+      final products = await getAllProducts();
+      final updatedProducts = products.where((product) => product.id != id).toList();
+      await cacheProducts(updatedProducts);
+    } catch (e) {
       throw CacheException();
     }
   }
 }
-
-

@@ -1,5 +1,14 @@
 class Urls {
-  static const String baseUrl ='https://my-json-server.typicode.com/Yoheniy/mockjson/posts';
+  static const String CACHED_PRODUCTS = 'CACHED_PRODUCTS';
   static const String apiKey = '';
-  static String getProdcutById(String id) => '$baseUrl/$id';
+  static const String baseUrl = 'https://g5-flutter-learning-path-be.onrender.com/api/v1';
+  static const String allProductUrl = '$baseUrl/products';
+  static const Map<String, String> jsonHeader = {'Content-Type': 'application/json'};
+  static const String post = 'POST';
+  static const String get = 'GET';
+  static const String put = 'PUT';
+  static const String delete = 'DELETE';
+  static String getSingleProdcut(String id) => '$allProductUrl/$id';
+
 }
+

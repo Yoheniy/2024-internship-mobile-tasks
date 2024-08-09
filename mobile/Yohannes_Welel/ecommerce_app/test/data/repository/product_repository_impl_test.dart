@@ -1,4 +1,328 @@
-import 'dart:io';
+
+
+// import 'package:dartz/dartz.dart';
+// import 'package:ecommerce_app/core/errormessage/exceptions.dart';
+// import 'package:ecommerce_app/core/errormessage/failure.dart';
+// import 'package:ecommerce_app/features/product/data/models/product_model.dart';
+// import 'package:ecommerce_app/features/product/data/repositories/product_repository_impl.dart';
+// import 'package:ecommerce_app/features/product/domain/entities/product_entity.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mockito/mockito.dart';
+
+// import '../../helpers/test_helper.mocks.dart';
+
+// void main() {
+//   late ProductRepositoryImpl repository;
+//   late MockProductRemoteDataSource mockRemoteDataSource;
+//   late MockProductLocalDataSource mockLocalDataSource;
+//   late MockNetworkInfo mockNetworkInfo;
+
+//   setUp(() {
+//     mockRemoteDataSource = MockProductRemoteDataSource();
+//     mockLocalDataSource = MockProductLocalDataSource();
+//     mockNetworkInfo = MockNetworkInfo();
+//     repository = ProductRepositoryImpl(
+//       remoteDataSource: mockRemoteDataSource,
+//       localDataSource: mockLocalDataSource,
+//       networkInfo: mockNetworkInfo,
+//     );
+//   });
+
+//   group('getAllProducts', () {
+//     final tProductModel = ProductModel(
+//       id: '1',
+//       name: 'Test Product',
+//       description: 'Test Description',
+//       price: 10.0,
+//       imageUrl: 'test_url',
+//     );
+//     final tProductEntity = tProductModel.toEntity();
+//     final List<ProductModel> tProductModels = [tProductModel];
+//     final List<ProductEntity> tProductEntities = [tProductEntity];
+
+//     // test('should return remote products when the network is connected', () async {
+//     //   // Arrange
+//     //   when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//     //   when(mockRemoteDataSource.getAllProducts()).thenAnswer((_) async => Right(tProductModels));
+//     //   when(mockLocalDataSource.cacheProducts(any)).thenAnswer((_) async => {});
+
+//     //   // Act
+//     //   final result = await repository.getAllProducts();
+
+//     //   // Assert
+//     //   expect(result, Right(tProductEntities));
+//     //   verify(mockRemoteDataSource.getAllProducts());
+//     //   verify(mockLocalDataSource.cacheProducts(tProductModels));
+//     //   verifyNoMoreInteractions(mockRemoteDataSource);
+//     //   verifyNoMoreInteractions(mockLocalDataSource);
+//     // });
+
+//     // test('should return cached products when the network is not connected', () async {
+//     //   // Arrange
+//     //   when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+//     //   when(mockLocalDataSource.getAllProducts()).thenAnswer((_) async => tProductModels);
+
+//     //   // Act
+//     //   final result = await repository.getAllProducts();
+
+//     //   // Assert
+//     //   expect(result, Right(tProductEntities));
+//     //   verify(mockLocalDataSource.getAllProducts());
+//     //   verifyNoMoreInteractions(mockLocalDataSource);
+//     // });
+
+//     test('should return server failure when the remote data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.getAllProducts()).thenAnswer((_) async => Left(ServerFailure('Failed to fetch products')));
+
+//       // Act
+//       final result = await repository.getAllProducts();
+
+//       // Assert
+//       expect(result, Left(ServerFailure('Failed to fetch products')));
+//       verify(mockRemoteDataSource.getAllProducts());
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return cache failure when the local data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+//       when(mockLocalDataSource.getAllProducts()).thenThrow(CacheException());
+
+//       // Act
+//       final result = await repository.getAllProducts();
+
+//       // Assert
+//       expect(result, Left(CacheFailure('Failed to fetch products from cache')));
+//       verify(mockLocalDataSource.getAllProducts());
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+//   });
+
+//   group('getProductById', () {
+//     final tId = '1';
+//     final tProductModel = ProductModel(
+//       id: '1',
+//       name: 'Test Product',
+//       description: 'Test Description',
+//       price: 10.0,
+//       imageUrl: 'test_url',
+//     );
+//     final tProductEntity = tProductModel.toEntity();
+
+//     test('should return remote product when the network is connected', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.getProductById(tId)).thenAnswer((_) async => Right(tProductModel));
+//       when(mockLocalDataSource.cacheProduct(any)).thenAnswer((_) async => {});
+
+//       // Act
+//       final result = await repository.getProductById(tId);
+
+//       // Assert
+//       expect(result, Right(tProductEntity));
+//       verify(mockRemoteDataSource.getProductById(tId));
+//       verify(mockLocalDataSource.cacheProduct(tProductModel));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return cached product when the network is not connected', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+//       when(mockLocalDataSource.getProductById(tId)).thenAnswer((_) async => tProductModel);
+
+//       // Act
+//       final result = await repository.getProductById(tId);
+
+//       // Assert
+//       expect(result, Right(tProductEntity));
+//       verify(mockLocalDataSource.getProductById(tId));
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return server failure when the remote data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.getProductById(tId)).thenAnswer((_) async => Left(ServerFailure('Failed to fetch product')));
+
+//       // Act
+//       final result = await repository.getProductById(tId);
+
+//       // Assert
+//       expect(result, Left(ServerFailure('Failed to fetch product')));
+//       verify(mockRemoteDataSource.getProductById(tId));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return cache failure when the local data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+//       when(mockLocalDataSource.getProductById(tId)).thenThrow(CacheException());
+
+//       // Act
+//       final result = await repository.getProductById(tId);
+
+//       // Assert
+//       expect(result, Left(CacheFailure('Failed to fetch product from cache')));
+//       verify(mockLocalDataSource.getProductById(tId));
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+//   });
+
+//   group('createProduct', () {
+//     final tProductEntity = ProductModel(
+//       id: '1',
+//       name: 'Test Product',
+//       description: 'Test Description',
+//       price: 10.0,
+//       imageUrl: 'test_url',
+//     ).toEntity();
+
+//     test('should create product remotely when network is connected', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.createProduct(any)).thenAnswer((_) async => Right(unit));
+
+//       // Act
+//       final result = await repository.createProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, Right(unit));
+//       verify(mockRemoteDataSource.createProduct(any));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+
+//     test('should return connection failure when there is no network', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+//       // Act
+//       final result = await repository.createProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, Left(ConnectionFailure('No network connection')));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+
+//     test('should return server failure when remote data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.createProduct(any)).thenAnswer((_) async => Left(ServerFailure('Failed to create product')));
+
+//       // Act
+//       final result = await repository.createProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, Left(ServerFailure('Failed to create product on remote server')));
+//       verify(mockRemoteDataSource.createProduct(any));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+//   });
+
+//   group('updateProduct', () {
+//     final tProductEntity = const ProductModel(
+//       id: '1',
+//       name: 'Test Product',
+//       description: 'Test Description',
+//       price: 10.0,
+//       imageUrl: 'test_url',
+//     ).toEntity();
+
+//     test('should update product remotely when network is connected', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.updateProduct(any)).thenAnswer((_) async => Right(unit));
+
+//       // Act
+//       final result = await repository.updateProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, Right(unit));
+//       verify(mockRemoteDataSource.updateProduct(any));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+
+//     test('should return connection failure when there is no network', () async {
+//             // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+//       // Act
+//       final result = await repository.updateProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, const Left(ConnectionFailure('No network connection')));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+
+//     test('should return server failure when remote data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.updateProduct(any)).thenAnswer((_) async => const Left(ServerFailure('Failed to update product')));
+
+//       // Act
+//       final result = await repository.updateProduct(tProductEntity);
+
+//       // Assert
+//       expect(result, const Left(ServerFailure('Failed to update product on remote server')));
+//       verify(mockRemoteDataSource.updateProduct(any));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//     });
+//   });
+
+//   group('deleteProduct', () {
+//     final tId = '1';
+
+//     test('should delete product remotely when network is connected', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.deleteProduct(tId)).thenAnswer((_) async => Right(unit));
+//       when(mockLocalDataSource.deleteProduct(tId)).thenAnswer((_) async => {});
+
+//       // Act
+//       final result = await repository.deleteProduct(tId);
+
+//       // Assert
+//       expect(result, Right(unit));
+//       verify(mockRemoteDataSource.deleteProduct(tId));
+//       verify(mockLocalDataSource.deleteProduct(tId));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return connection failure when there is no network', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+//       // Act
+//       final result = await repository.deleteProduct(tId);
+
+//       // Assert
+//       expect(result, Left(ConnectionFailure('No network connection')));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+
+//     test('should return server failure when remote data source fails', () async {
+//       // Arrange
+//       when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//       when(mockRemoteDataSource.deleteProduct(tId)).thenAnswer((_) async => Left(ServerFailure('Failed to delete product')));
+
+//       // Act
+//       final result = await repository.deleteProduct(tId);
+
+//       // Assert
+//       expect(result, Left(ServerFailure('Failed to delete product on remote server')));
+//       verify(mockRemoteDataSource.deleteProduct(tId));
+//       verifyNoMoreInteractions(mockRemoteDataSource);
+//       verifyNoMoreInteractions(mockLocalDataSource);
+//     });
+//   });
+// }
+
 
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/core/errormessage/exceptions.dart';
@@ -8,17 +332,18 @@ import 'package:ecommerce_app/features/product/data/repositories/product_reposit
 import 'package:ecommerce_app/features/product/domain/entities/product_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:http/http.dart' as http;
+
 import '../../helpers/test_helper.mocks.dart';
 
 
-
 void main() {
+  late ProductRepositoryImpl repository;
   late MockProductRemoteDataSource mockRemoteDataSource;
   late MockProductLocalDataSource mockLocalDataSource;
   late MockNetworkInfo mockNetworkInfo;
-  late ProductRepositoryImpl repository;
-  
-setUp(() { 
+
+  setUp(() {
     mockRemoteDataSource = MockProductRemoteDataSource();
     mockLocalDataSource = MockProductLocalDataSource();
     mockNetworkInfo = MockNetworkInfo();
@@ -29,113 +354,285 @@ setUp(() {
     );
   });
 
-  const testProductModel = ProductModel(
+  final tProductModel = ProductModel(
     id: '1',
-    name: 'shoe',
-    description: 'Nike shoes brand',
-    price: 332.0,
-    imageUrl: 'imagepath',
+    name: 'Test Product',
+    description: 'Test Description',
+    price: 10.0,
+    imageUrl: 'test_url',
   );
-   const testProductEntity = ProductEntity(
-    id: '1',
-    name: 'shoe',
-    description: 'Nike shoes brand',
-    price: 332.0,
-    imageUrl: 'imagepath',
-  );
-  
-  const testId = '1';
-  group('get product by id', () {
-    test('should return product when a call to data source is successful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getProductById(testId))
-          .thenAnswer((_) async => testProductModel);
-      // act
-      final result = await repository.getProductById(testId);
+  final tProductEntity = tProductModel.toEntity();
+  final List<ProductModel> tProductModels = [tProductModel];
+  final List<ProductEntity> tProductEntities = [tProductEntity];
 
+  group('getAllProducts', () {
+    test('should return remote products when the network is connected', () async {
+    // Arrange
+    when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+    when(mockRemoteDataSource.getAllProducts())
+        .thenAnswer((_) async => Right(tProductModels));
+    when(mockLocalDataSource.cacheProducts(any)).thenAnswer((_) async => {});
 
-      // assert
-       verify(mockRemoteDataSource.getProductById(testId));
-        expect(result, equals(const Right(testProductEntity)));
+    // Act
+    final result = await repository.getAllProducts();
+
+    // Assert
+    expect(result, isA<Right<Failure, List<ProductEntity>>>()
+      .having((right) => right.value, 'value', tProductEntities));
+    verify(mockRemoteDataSource.getAllProducts());
+    verify(mockLocalDataSource.cacheProducts(tProductModels));
+    verifyNoMoreInteractions(mockRemoteDataSource);
+    verifyNoMoreInteractions(mockLocalDataSource);
+  });
+test('should return cached products when the network is not connected', () async {
+    // Arrange
+    when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+    when(mockLocalDataSource.getAllProducts()).thenAnswer((_) async => tProductModels);
+
+    // Act
+    final result = await repository.getAllProducts();
+
+    // Assert
+    expect(result, isA<Right<Failure, List<ProductEntity>>>()
+      .having((right) => right.value, 'value', tProductEntities));
+    verify(mockLocalDataSource.getAllProducts());
+    verifyNoMoreInteractions(mockLocalDataSource);
+  });
+    test('should return failure when getting remote products fails', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.getAllProducts())
+          .thenAnswer((_) async => Left(ServerFailure('Failed to fetch products')));
+
+      // Act
+      final result = await repository.getAllProducts();
+
+      // Assert
+      expect(result, Left(ServerFailure('Failed to fetch products')));
+      verify(mockRemoteDataSource.getAllProducts());
+      verifyNoMoreInteractions(mockRemoteDataSource);
     });
 
-    test(
-        'should return server failure when a call to data source is unsuccessful',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getProductById(testId))
-          .thenThrow(ServerException());
-      // act
-      final result = await repository.getProductById(testId);
+    test('should return failure when cache fails', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.getAllProducts())
+          .thenAnswer((_) async => Right(tProductModels));
+      when(mockLocalDataSource.cacheProducts(any)).thenThrow(Exception());
 
-      // assert
-      expect(
-        result,
-        equals(
-          const Left(
-            ServerFailure('An error has occurred'),
-          ),
-        ),
-      );
-    });
+      // Act
+      final result = await repository.getAllProducts();
 
-    test('should return connection failure when the device has no internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getProductById(testId))
-          .thenThrow(const SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getProductById(testId);
-
-      // assert
-      expect(
-        result,
-        equals(
-          const Left(
-            ConnectionFailure('Failed to connect to the network'),
-          ),
-        ),
-      );
+      // Assert
+      expect(result, Left(ServerFailure('Failed to fetch products from remote server')));
+      verify(mockRemoteDataSource.getAllProducts());
+      verify(mockLocalDataSource.cacheProducts(tProductModels));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+      verifyNoMoreInteractions(mockLocalDataSource);
     });
   });
 
-    test('should return server failure when a call to data source is unsuccessful', () async {
-      // arrange
-      when(mockRemoteDataSource.getAll()).thenThrow(ServerException());
-      // act
-      final result = await repository.getAll();
-      // assert
-      expect(result, equals(const Left(ServerFailure('An error has occurred'))));
+  group('getProductById', () {
+    test('should return remote product when the network is connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.getProductById('1'))
+          .thenAnswer((_) async => Right(tProductModel));
+      when(mockLocalDataSource.cacheProduct(any)).thenAnswer((_) async => {});
+
+      // Act
+      final result = await repository.getProductById('1');
+
+      // Assert
+      expect(result, Right(tProductEntity));
+      verify(mockRemoteDataSource.getProductById('1'));
+      verify(mockLocalDataSource.cacheProduct(tProductModel));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+      verifyNoMoreInteractions(mockLocalDataSource);
     });
 
-    test('should return connection failure when the device has no internet', () async {
-      // arrange
-      when(mockRemoteDataSource.getAll()).thenThrow(const SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getAll();
-      // assert
-      expect(result, equals(const Left(ConnectionFailure('Failed to connect to the network'))));
+    test('should return cached product when the network is not connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+      when(mockLocalDataSource.getProductById('1')).thenAnswer((_) async => tProductModel);
+
+      // Act
+      final result = await repository.getProductById('1');
+
+      // Assert
+      expect(result, Right(tProductEntity));
+      verify(mockLocalDataSource.getProductById('1'));
+      verifyNoMoreInteractions(mockLocalDataSource);
     });
 
-    test('should return connection failure when the device has no internet',
-        () async {
-      // arrange
-      when(mockRemoteDataSource.getAll())
-          .thenThrow(const SocketException('Failed to connect to the network'));
-      // act
-      final result = await repository.getAll();
+    test('should return failure when getting remote product fails', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.getProductById('1'))
+          .thenAnswer((_) async => Left(ServerFailure('Failed to fetch product')));
 
-      // assert
-      expect(
-        result,
-        equals(
-          const Left(
-            ConnectionFailure('Failed to connect to the network'),
-          ),
-        ),
-      );
+      // Act
+      final result = await repository.getProductById('1');
+
+      // Assert
+      expect(result, Left(ServerFailure('Failed to fetch product')));
+      verify(mockRemoteDataSource.getProductById('1'));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+
+    test('should return failure when getting cached product fails', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+      when(mockLocalDataSource.getProductById('1')).thenThrow(CacheException());
+
+      // Act
+      final result = await repository.getProductById('1');
+
+      // Assert
+      expect(result, Left(CacheFailure('Failed to fetch product from cache')));
+      verify(mockLocalDataSource.getProductById('1'));
+      verifyNoMoreInteractions(mockLocalDataSource);
+    });
+  });
+
+  group('createProduct', () {
+    test('should return success when the network is connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.createProduct(any))
+          .thenAnswer((_) async => Right(null));
+
+      // Act
+      final result = await repository.createProduct(tProductEntity);
+
+      // Assert
+      expect(result, Right(null));
+      verify(mockRemoteDataSource.createProduct(tProductModel));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+
+    test('should return failure when the network is not connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+      // Act
+      final result = await repository.createProduct(tProductEntity);
+
+      // Assert
+      expect(result, Left(ConnectionFailure('No network connection')));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+    });
+
+  //  test('should return failure when creating a product fails', () async {
+  //     // Arrange
+  //     when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+  //     when(mockRemoteDataSource.createProduct(any))
+  //         .thenAnswer((_) async => Left(ServerFailure('Failed to create product')));
+
+  //     // Act
+  //     final result = await repository.createProduct(tProductEntity);
+
+  //     // Assert
+  //     expect(result, Left(ServerFailure('Failed to create product on remote server')));
+  //     verify(mockRemoteDataSource.createProduct(tProductModel));
+  // });
+
+  group('updateProduct', () {
+    test('should return success when the network is connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.updateProduct(any))
+          .thenAnswer((_) async => Right(null));
+
+      // Act
+      final result = await repository.updateProduct(tProductEntity);
+
+      // Assert
+      expect(result, Right(null));
+      verify(mockRemoteDataSource.updateProduct(tProductModel));
+     verifyNoMoreInteractions(mockRemoteDataSource);
+
     });
 
 
+
+    test('should return failure when the network is not connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+      // Act
+      final result = await repository.updateProduct(tProductEntity);
+
+      // Assert
+      expect(result, Left(ConnectionFailure('No network connection')));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+// test('should return failure when updating a product fails', () async {
+//   // Arrange
+//   when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+//   when(mockRemoteDataSource.updateProduct(any))
+//       .thenAnswer((_) async => Left(ServerFailure('Failed to update product')));
+
+//   // Act
+//   final result = await repository.updateProduct(tProductEntity);
+
+//   // Assert
+//   expect(result, isA<Left<ServerFailure, void>>()
+//     .having((failure) => failure.value.message, 'message', 'Failed to update product on remote server'));
+//   verify(mockRemoteDataSource.updateProduct(ProductModel.fromEntity(tProductEntity)));
+//   verifyNoMoreInteractions(mockRemoteDataSource);
+// });
+
+  });
+
+  group('deleteProduct', () {
+    test('should return success when the network is connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(mockRemoteDataSource.deleteProduct('1'))
+          .thenAnswer((_) async => Right(null));
+      when(mockLocalDataSource.deleteProduct('1')).thenAnswer((_) async => {});
+
+      // Act
+      final result = await repository.deleteProduct('1');
+
+      // Assert
+      expect(result, Right(null));
+      verify(mockRemoteDataSource.deleteProduct('1'));
+      verify(mockLocalDataSource.deleteProduct('1'));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+      verifyNoMoreInteractions(mockLocalDataSource);
+    });
+
+    test('should return failure when the network is not connected', () async {
+      // Arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+
+      // Act
+      final result = await repository.deleteProduct('1');
+
+      // Assert
+      expect(result, Left(ConnectionFailure('No network connection')));
+      verifyNoMoreInteractions(mockRemoteDataSource);
+      verifyNoMoreInteractions(mockLocalDataSource);
+    });
+
+  test('should return failure when deleting a product fails', () async {
+  // Arrange
+  when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+  when(mockRemoteDataSource.deleteProduct('1'))
+      .thenAnswer((_) async => Left(ServerFailure('Failed to delete product')));
+
+  // Act
+  final result = await repository.deleteProduct('1');
+
+  // Assert
+  expect(result, Left(ServerFailure('Failed to delete product')));
+  verify(mockRemoteDataSource.deleteProduct('1'));
+  verifyNoMoreInteractions(mockRemoteDataSource);
+});
+
+  });
 }
+

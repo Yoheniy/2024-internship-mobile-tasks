@@ -8,7 +8,7 @@ class GetAllProductUsecase{
   ProductRepository productRepository;
   GetAllProductUsecase(this.productRepository);
   Future<Either<Failure,List<ProductEntity>>> execute() async{
-    return await productRepository.getAll();
+    return await productRepository.getAllProducts();
     
   } 
 }
