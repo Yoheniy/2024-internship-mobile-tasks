@@ -31,14 +31,14 @@ class ProductRepositoryImpl implements ProductRepository {
           },
         );
       } catch (e) {
-        return Left(ServerFailure('Failed to fetch products from remote server'));
+        return const Left(ServerFailure('Failed to fetch products from remote server'));
       }
     } else {
       try {
         final localProducts = await localDataSource.getAllProducts();
         return Right(localProducts.map((model) => model.toEntity()).toList());
       } catch (e) {
-        return Left(CacheFailure('Failed to fetch products from cache'));
+        return const Left(CacheFailure('Failed to fetch products from cache'));
       }
     }
   }
@@ -56,14 +56,14 @@ class ProductRepositoryImpl implements ProductRepository {
           },
         );
       } catch (e) {
-        return Left(ServerFailure('Failed to fetch product from remote server'));
+        return const Left(ServerFailure('Failed to fetch product from remote server'));
       }
     } else {
       try {
         final localProduct = await localDataSource.getProductById(id);
         return Right(localProduct.toEntity());
       } catch (e) {
-        return Left(CacheFailure('Failed to fetch product from cache'));
+        return const Left(CacheFailure('Failed to fetch product from cache'));
       }
     }
   }
@@ -76,10 +76,10 @@ class ProductRepositoryImpl implements ProductRepository {
         final result = await remoteDataSource.createProduct(productModel);
         return result;
       } catch (e) {
-        return Left(ServerFailure('Failed to create product on remote server'));
+        return const Left(ServerFailure('Failed to create product on remote server'));
       }
     } else {
-      return Left(ConnectionFailure('No network connection'));
+      return const Left(ConnectionFailure('No network connection'));
     }
   }
 
@@ -91,10 +91,10 @@ class ProductRepositoryImpl implements ProductRepository {
         final result = await remoteDataSource.updateProduct(productModel);
         return result;
       } catch (e) {
-        return Left(ServerFailure('Failed to update product on remote server'));
+        return const Left(ServerFailure('Failed to update product on remote server'));
       }
     } else {
-      return Left(ConnectionFailure('No network connection'));
+      return const Left(ConnectionFailure('No network connection'));
     }
   }
 
@@ -108,10 +108,10 @@ class ProductRepositoryImpl implements ProductRepository {
         }
         return result;
       } catch (e) {
-        return Left(ServerFailure('Failed to delete product on remote server'));
+        return const Left(ServerFailure('Failed to delete product on remote server'));
       }
     } else {
-      return Left(ConnectionFailure('No network connection'));
+      return const Left(ConnectionFailure('No network connection'));
     }
   }
 }

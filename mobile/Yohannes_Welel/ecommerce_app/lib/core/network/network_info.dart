@@ -11,4 +11,3 @@ class NetworkInfoImpl implements NetworkInfo {
   @override
   Future<bool> get isConnected async => connectionChecker.hasConnection;
 }
-

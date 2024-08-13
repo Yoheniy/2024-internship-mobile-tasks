@@ -16,20 +16,20 @@ void main() {
   late MockProductRepository mockProductRepository;
   late CreateProductUsecase createProductUsecase;
   late UpdateProductUsecase updateProductUsecase;
-  late DeleteProductUsescase deleteProductUsecase;
-  late GetProductUsescases getProductUsecases;
+  late DeleteProductUsecase deleteProductUsecase;
+  late GetProductUsecase getProductUsecases;
   late GetAllProductUsecase getAllProductUsecase;
 
   setUp(() {
     mockProductRepository = MockProductRepository();
     createProductUsecase = CreateProductUsecase(mockProductRepository);
     updateProductUsecase = UpdateProductUsecase(mockProductRepository);
-    deleteProductUsecase = DeleteProductUsescase(mockProductRepository);
-    getProductUsecases = GetProductUsescases(mockProductRepository);
+    deleteProductUsecase = DeleteProductUsecase(mockProductRepository);
+    getProductUsecases = GetProductUsecase(mockProductRepository);
     getAllProductUsecase = GetAllProductUsecase(mockProductRepository);
   });
 
-  final tProduct = ProductEntity(
+  const tProduct = ProductEntity(
     id: '1',
     name: 'Test Product',
     description: 'Test Description',

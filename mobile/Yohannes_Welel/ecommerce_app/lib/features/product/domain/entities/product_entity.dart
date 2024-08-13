@@ -28,9 +28,4 @@ class ProductEntity extends Equatable{
     ];
 
   
-
-  
-
-
-  
 }
