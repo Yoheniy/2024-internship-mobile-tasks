@@ -24,7 +24,7 @@ abstract class ProductLocalDataSource {
 class ProductLocalDataSourceImpl implements ProductLocalDataSource {
   final SharedPreferences sharedPreferences;
 
-  ProductLocalDataSourceImpl({required this.sharedPreferences});
+  ProductLocalDataSourceImpl(this.sharedPreferences);
 
   @override
   Future<List<ProductModel>> getAllProducts() async {

@@ -21,11 +21,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final CreateProductUsecase createProductUsecase;
 
   ProductBloc(
-      this.getProductUsecase,
-      this.getAllProductUsecase,
+      
+       this.getProductUsecase,
+       this.getAllProductUsecase,
       this.updateProductUsecase,
-      this.deleteProductUsecase,
-      this.createProductUsecase,)
+       this.deleteProductUsecase,
+       this.createProductUsecase,
+      
+       )
       : super(InitialState()) {
     on<GetSingleProductEvent>((event, emit) async {
       emit(LoadingState());
@@ -44,7 +47,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ErrorState(failure.message));
       }, (data) {
         List<ProductModel> newProduct = [];
-        // ignore: avoid_function_literals_in_foreach_calls
+
         data.forEach((el) async => newProduct.add(ProductModel.fromEntity(el)));
 
         emit(LoadedAllProductState(allProducts: newProduct));

@@ -17,7 +17,7 @@ void main() {
 
   setUp(() {
     mockSharedPreferences = MockSharedPreferences();
-    dataSource = ProductLocalDataSourceImpl(sharedPreferences: mockSharedPreferences);
+    dataSource = ProductLocalDataSourceImpl(mockSharedPreferences);
   });
 
   group('cacheProducts', () {
