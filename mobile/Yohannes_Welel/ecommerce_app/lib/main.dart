@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'features/product/domain/entities/product_entity.dart';
-import 'features/product/presentation/Auth/pages/signin_page.dart';
-import 'features/product/presentation/Auth/pages/signup_page.dart';
+import 'features/auth/presentation/pages/signin_page.dart';
+import 'features/auth/presentation/pages/signup_page.dart';
 import 'features/product/presentation/blocs/product/product_bloc.dart';
-import 'features/product/presentation/blocs/user/bloc/user_bloc.dart';
+import 'features/auth/presentation/blocs/user/user_bloc.dart';
 import 'features/product/presentation/pages/details_page.dart';
 import 'features/product/presentation/pages/home_page.dart';
 import 'features/product/presentation/pages/product_add_page.dart';
@@ -60,7 +60,7 @@ void main() async {
           return null;
         },
         title: 'Flutter App',
-        builder: EasyLoading.init(),
+        // builder: EasyLoading.init(),
         debugShowCheckedModeBanner: false,
       ),
     ),

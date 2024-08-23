@@ -5,10 +5,10 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/user.dart';
+import '../../domain/entity/user.dart';
 import '../../domain/repository/user_repository.dart';
-import '../data_sources/local/user_local_data_sources.dart';
-import '../data_sources/remote/user_remote_data_source.dart';
+import '../../../product/data/data_sources/local/user_local_data_sources.dart';
+import '../../../product/data/data_sources/remote/user_remote_data_source.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remoteDataSource;

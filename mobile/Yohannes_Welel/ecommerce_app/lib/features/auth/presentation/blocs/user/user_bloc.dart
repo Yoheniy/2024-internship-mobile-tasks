@@ -1,13 +1,14 @@
 // user_bloc.dart
 import 'package:bloc/bloc.dart';
 
-import '../../../../domain/usecases/user/get_user_case.dart';
-import '../../../../domain/usecases/user/login_usecase.dart';
-import '../../../../domain/usecases/user/register_usecase.dart';
+import '../../../domain/usecases/user/get_user_case.dart';
+import '../../../domain/usecases/user/login_usecase.dart';
+import '../../../domain/usecases/user/register_usecase.dart';
 import 'user_event.dart';
 import 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
+  
   final Login login;
   final Register register;
   final GetUser getUser;
