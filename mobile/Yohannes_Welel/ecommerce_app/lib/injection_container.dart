@@ -12,19 +12,19 @@ import 'features/product/data/data_sources/remote/remote_data_source.dart';
 import 'features/product/data/data_sources/remote/remote_data_source_impl.dart';
 import 'features/product/data/data_sources/remote/user_remote_data_source.dart';
 import 'features/product/data/repositories/product_repository_impl.dart';
-import 'features/product/data/repositories/user_repository_impl.dart';
+import 'features/auth/data/repository/user_repository_impl.dart';
 import 'features/product/domain/repository/product_repository.dart';
-import 'features/product/domain/repository/user_repository.dart';
+import 'features/auth/domain/repository/user_repository.dart';
 import 'features/product/domain/usecases/add_product_usecase.dart';
 import 'features/product/domain/usecases/delete_product_usecase.dart';
 import 'features/product/domain/usecases/get_product_usecase.dart';
 import 'features/product/domain/usecases/get_products_usecase.dart';
 import 'features/product/domain/usecases/update_product_usecase.dart';
-import 'features/product/domain/usecases/user/get_user_case.dart';
-import 'features/product/domain/usecases/user/login_usecase.dart';
-import 'features/product/domain/usecases/user/register_usecase.dart';
+import 'features/auth/domain/usecases/user/get_user_case.dart';
+import 'features/auth/domain/usecases/user/login_usecase.dart';
+import 'features/auth/domain/usecases/user/register_usecase.dart';
 import 'features/product/presentation/blocs/product/product_bloc.dart';
-import 'features/product/presentation/blocs/user/bloc/user_bloc.dart';
+import 'features/auth/presentation/blocs/user/user_bloc.dart';
 
 final sl = GetIt.instance;
 

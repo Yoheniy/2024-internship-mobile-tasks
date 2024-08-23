@@ -2,7 +2,7 @@ import 'dart:convert'; // Import the dart:convert package
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/error/exception.dart';
-import '../../../../auth/data/models/user/user_model.dart';
+import '../../models/user/user_model.dart';
 
 
 abstract class UserLocalDataSource {

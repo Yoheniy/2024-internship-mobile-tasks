@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../blocs/user/bloc/user_bloc.dart';
-import '../../blocs/user/bloc/user_event.dart';
-import '../../blocs/user/bloc/user_state.dart';
+import '../blocs/user/user_bloc.dart';
+import '../blocs/user/user_event.dart';
+import '../blocs/user/user_state.dart';
 import '../widgets/common_widget.dart';
 import 'signin_page.dart';
 

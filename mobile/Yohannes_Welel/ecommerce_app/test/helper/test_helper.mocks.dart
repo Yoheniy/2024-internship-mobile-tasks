@@ -20,7 +20,7 @@ import 'package:ecommerce_app/features/product/data/data_sources/remote/remote_d
     as _i10;
 import 'package:ecommerce_app/features/product/data/models/product_model.dart'
     as _i3;
-import 'package:ecommerce_app/features/product/data/models/user/user_model.dart'
+import 'package:ecommerce_app/features/auth/data/models/user/user_model.dart'
     as _i5;
 import 'package:ecommerce_app/features/product/domain/entities/product_entity.dart'
     as _i9;

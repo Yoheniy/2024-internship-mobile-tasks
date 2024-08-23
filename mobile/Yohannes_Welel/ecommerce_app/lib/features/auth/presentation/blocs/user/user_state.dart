@@ -1,7 +1,7 @@
 // user_state.dart
 import 'package:equatable/equatable.dart';
 
-import '../../../../domain/entities/user.dart';
+import '../../../domain/entity/user.dart';
 
 abstract class UserState extends Equatable {
   @override
